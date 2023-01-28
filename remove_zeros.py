@@ -11,17 +11,25 @@ class NalParser:
 
     def process_packet(self, pkt: List[int]):
         finalized_pkt = pkt
-        for idx, byte in enumerate(pkt):
-            if self.count > 0 and self.count < 3 and byte != 0:
-                # reset counter if we went across a few zeros ( < 3 ).
-                self.count = 0
-            if self.count >= 3 and byte != 0:
-                # we have reached the first non-boundary byte after a valid
-                # boundary. It's time to remove the boundary.
-                finalized_pkt = self.remove_boundaries(pkt, idx)
-                break
-            if byte == 0:
-                self.count += 1
+        bytes_read = 0
+
+        while bytes_read < len(pkt):
+            pkt_to_iterate = finalized_pkt[-1] if type(
+                finalized_pkt[0]) == list else finalized_pkt
+
+            for idx, byte in enumerate(pkt_to_iterate):
+                bytes_read += 1
+                if self.count > 0 and self.count < 3 and byte != 0:
+                    # reset counter if we went across a few zeros ( < 3 ).
+                    self.count = 0
+                if self.count >= 3 and byte != 0:
+                    # we have reached the first non-boundary byte after a valid
+                    # boundary. It's time to remove the boundary.
+                    finalized_pkt = self.remove_boundaries(finalized_pkt, idx)
+                    break
+                if byte == 0:
+                    self.count += 1
+
         if type(finalized_pkt[0]) == list:
             self.pieces.extend(finalized_pkt)
         else:

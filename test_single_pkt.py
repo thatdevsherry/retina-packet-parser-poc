@@ -30,6 +30,19 @@ class TestZeroRemovalInSinglePacket(TestCase):
         self.pkt_boundary_at_start_expected.extend(
             non_boundary_value_after_boundary)
 
+        self.pkt_boundary_at_start_and_middle = []
+        self.pkt_boundary_at_start_and_middle.extend(repeat(boundary_value, 3))
+        self.pkt_boundary_at_start_and_middle.extend(
+            non_boundary_value_before_boundary)
+        self.pkt_boundary_at_start_and_middle.extend(repeat(boundary_value, 3))
+        self.pkt_boundary_at_start_and_middle.extend(
+            non_boundary_value_after_boundary)
+        self.pkt_boundary_at_start_and_middle_expected = []
+        self.pkt_boundary_at_start_and_middle_expected.extend(
+            [non_boundary_value_before_boundary])
+        self.pkt_boundary_at_start_and_middle_expected.extend(
+            [non_boundary_value_after_boundary])
+
         self.pkt_boundary_at_end = []
         self.pkt_boundary_at_end.extend(non_boundary_value_before_boundary)
         self.pkt_boundary_at_end.extend(non_boundary_value_after_boundary)
@@ -58,6 +71,16 @@ class TestZeroRemovalInSinglePacket(TestCase):
         print(f'Output: {output}')
         self.assertEqual(output,
                          [self.pkt_boundary_at_start_expected])
+
+    def test_boundary_at_start_and_middle(self):
+        input = self.pkt_boundary_at_start_and_middle
+        print(f'\nInput: {input}')
+        nal_parser = NalParser()
+        nal_parser.process_packet(input)
+        output = nal_parser.pieces
+        print(f'Output: {output}')
+        self.assertEqual(output,
+                         self.pkt_boundary_at_start_and_middle_expected)
 
     def test_boundary_at_end(self):
         """
