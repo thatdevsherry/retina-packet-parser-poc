@@ -11,9 +11,9 @@ Cases for PoC and status outlined below.
 - [x] Single pkt
     - [x] boundary at start
     - [x] boundary in middle
-- [ ] Multiple pkts
+- [x] Multiple pkts
     - [x] boundary across pkts only
-    - [ ] boundary across pkts AND in middle of same pkt
+    - [x] boundary across pkts AND in middle of same pkt
 
 ## Single packet
 
