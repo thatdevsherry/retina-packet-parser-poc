@@ -15,6 +15,8 @@ Cases for PoC and status outlined below.
     - [x] boundary across pkts only
     - [x] boundary across pkts AND in middle of same pkt
 
+**Note:** Definition of Boundary (as of now): Consecutive `0x00`s >= 3
+
 ## Single packet
 
 ### Boundary in middle
